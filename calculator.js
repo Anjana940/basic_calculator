@@ -1,8 +1,3 @@
-/**
- * The above JavaScript code is a simple calculator that performs basic arithmetic operations.
- * @returns The code does not have a specific return statement. However, there are several functions in
- * the code that perform specific tasks and may return a value.
- */
 let firstOperand = "";
 let secondOperand = "";
 let currentOperator = null;
@@ -29,15 +24,14 @@ opButtons.forEach(button => {
     if (currentOperator !== null) compute();
     firstOperand = display.textContent;
     currentOperator = button.textContent;
-    display.textContent = `${firstOperand} ${currentOperator}`;
     resetScreen = true;
   });
 });
 
 eqButton.addEventListener('click', () => {
-  if (currentOperator === null) return;
-  secondOperand = display.textContent.split(" ")[0];
+  if (currentOperator === null || resetScreen) return;
   compute();
+  currentOperator = null;
 });
 
 clearButton.addEventListener('click', () => {
@@ -48,19 +42,13 @@ clearButton.addEventListener('click', () => {
 });
 
 function compute() {
-  if (currentOperator === null) return;
+  if (currentOperator === null || resetScreen) return;
 
-  secondOperand = display.textContent.split(" ")[0];
+  secondOperand = display.textContent;
   const result = operate(currentOperator, firstOperand, secondOperand);
-  display.textContent = `${firstOperand} ${currentOperator} ${secondOperand} = ${result}`;
-  currentOperator = null;
-}
-
-function clear() {
-  display.textContent = "0";
-  firstOperand = "";
-  secondOperand = "";
-  currentOperator = null;
+  display.textContent = result;
+  firstOperand = result;
+  resetScreen = true;
 }
 
 function operate(operator, a, b) {
